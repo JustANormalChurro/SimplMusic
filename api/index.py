@@ -7,7 +7,6 @@ app = Flask(__name__)
 CORS(app)
 
 # Initialize YTMusic
-# We try to use unauthenticated first as per docs for public features
 yt = YTMusic()
 
 @app.route('/api/search', methods=['GET'])
@@ -25,7 +24,6 @@ def search():
 @app.route('/api/home', methods=['GET'])
 def home():
     try:
-        # get_home works unauthenticated but might be limited
         results = yt.get_home(limit=3)
         return jsonify(results)
     except Exception as e:
@@ -85,7 +83,3 @@ def get_charts():
         return jsonify(result)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
